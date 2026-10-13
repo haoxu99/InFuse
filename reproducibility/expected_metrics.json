@@ -1,0 +1,10 @@
+{
+  "experiment_name": "bunny_single_cavity",
+  "scope": "Measured author-selected bunny result in single-cavity shell mode; paper figure/table identifier pending",
+  "recorded_date": "2026-10-13",
+  "input_sha256": "e556e16429296d7936d32f0d5adb96b8a04db431518c3610de93ea2bb1eb0428",
+  "configuration_sha256": "5d9c3ea5143f3238e94e2873ecd5c3f7fbf94eb9d95f47de78f5301bd04b33eb",
+  "metrics": [
+    {"mode": "shell", "patch_count": 5, "polyline_count": 10762, "point_count": 588934, "layer_record_count": 468, "injection_layer_count": 4, "solid_layer_count": 2, "polyline_length_mm": 183815.592697, "inter_polyline_gap_mm": 62286.808384}
+  ]
+}

@@ -1,0 +1,13 @@
+;End GCode begin
+M104 S0 ;extruder heater off
+M140 S0 ;heated bed heater off (if you have it)
+G90 ;absolute positioning
+G92 E0
+G1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure
+G1 Z285 E-1 F3000 ;move Z up a bit and retract filament even more
+G1 X0 F3000 ;move X to min endstops, so the head is out of the way
+G1 Y350 F3000 ;so the head is out of the way and Plate is moved forward
+;End GCode end
+M82 ;absolute extrusion mode
+M104 S0
+;End of Gcode

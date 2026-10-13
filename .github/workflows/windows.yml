@@ -1,0 +1,36 @@
+name: InFuse Windows validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12.10'
+          architecture: x64
+      - name: Configure, build, and test
+        run: |
+          ./scripts/build_windows.ps1 -DependencyRoot "$env:RUNNER_TEMP\infuse-deps" -PythonPath (Get-Command python).Source
+      - name: Reproduce bunny single-cavity result
+        run: ./reproduce.ps1
+      - name: Retain numerical results and logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: InFuse-reproduction
+          path: |
+            results/reproduction/
+            build/Testing/Temporary/LastTest.log
+          if-no-files-found: warn

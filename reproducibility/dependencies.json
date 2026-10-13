@@ -1,0 +1,9 @@
+{
+  "platform": "Windows 11 x64",
+  "compiler": {"name": "Visual Studio 2022 C++", "workload": "Microsoft.VisualStudio.Workload.NativeDesktop", "bootstrapper": "https://aka.ms/vs/17/release/vs_Community.exe", "license": "Microsoft Visual Studio Community terms; academic use subject to eligibility"},
+  "cmake": {"version": "3.31.6", "url": "https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6-windows-x86_64.zip", "license": "BSD-3-Clause"},
+  "python": {"version": "3.12.10", "url": "https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe", "license": "PSF-2.0"},
+  "opencv": {"version": "4.4.0", "url": "https://github.com/opencv/opencv/releases/download/4.4.0/opencv-4.4.0-vc14_vc15.exe", "sha256": "cd480a6fe345f4285bf01626998ef8d65b92fbfb2db9f2905034e4c4786e0d50", "license": "BSD-3-Clause; retain notices included in the binary distribution"},
+  "clipper": {"version": "6.4.2", "included": true, "license": "BSL-1.0", "notice": "licenses/BSL-1.0.txt"},
+  "python_packages": []
+}

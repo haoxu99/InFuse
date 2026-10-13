@@ -1,0 +1,107 @@
+InFuse installation and compilation on Windows 11 x64
+====================================================
+
+Use these fixed directories on a fresh Windows 11 x64 installation:
+  Source:            C:\InFuse
+  Downloaded files:  C:\InFuseDownloads
+  Dependencies:      C:\InFuseDeps
+  Visual Studio:     C:\InFuseDeps\VisualStudio2022
+  Python:            C:\InFuseDeps\Python312
+  CMake:             C:\InFuseDeps\cmake-3.31.6-windows-x86_64
+  OpenCV config:     C:\InFuseDeps\opencv\build\x64\vc15\lib
+  Build output:      C:\InFuse\build
+
+1. Place the source package
+--------------------------
+Download the InFuse source archive from the project's GitHub release or obtain
+the supplied InFuse_source.zip. Extract its InFuse folder to C:\InFuse.
+Check that C:\InFuse\CMakeLists.txt exists. The repository URL is to be entered
+by the corresponding author in C:\InFuse\submission.txt before publication.
+
+Open PowerShell as Administrator for initial software installation. Create:
+  New-Item -ItemType Directory -Path C:\InFuseDownloads,C:\InFuseDeps -Force
+
+2. Install the free academic compiler
+------------------------------------
+Download the Visual Studio 2022 Community bootstrapper:
+  https://aka.ms/vs/17/release/vs_Community.exe
+Save it to C:\InFuseDownloads\vs_Community.exe.
+Run the following in elevated PowerShell and wait for installation to finish:
+  Start-Process -FilePath C:\InFuseDownloads\vs_Community.exe -ArgumentList '--wait --passive --norestart --includeRecommended --add Microsoft.VisualStudio.Workload.NativeDesktop --installPath C:\InFuseDeps\VisualStudio2022' -WindowStyle Hidden -Wait
+
+The workload must include MSVC v143 x64/x86 build tools and a Windows SDK.
+Restart Windows if the installer requires it. Review the Microsoft Community
+license eligibility terms for your institution. Professional/Enterprise is
+not required. Installer documentation:
+  https://learn.microsoft.com/en-us/visualstudio/install/command-line-parameter-examples?view=vs-2022
+  https://visualstudio.microsoft.com/vs/community/
+
+3. Install Python 3.12.10 x64
+----------------------------
+Download:
+  https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe
+Save it to C:\InFuseDownloads\python-3.12.10-amd64.exe.
+Install it using:
+  Start-Process -FilePath C:\InFuseDownloads\python-3.12.10-amd64.exe -ArgumentList '/quiet InstallAllUsers=0 TargetDir=C:\InFuseDeps\Python312 Include_test=0 Include_launcher=0 PrependPath=0' -WindowStyle Hidden -Wait
+Check:
+  & C:\InFuseDeps\Python312\python.exe --version
+No pip packages are required. Python is used by tests and result generation.
+
+4. Extract portable CMake 3.31.6 x64
+-----------------------------------
+Download:
+  https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6-windows-x86_64.zip
+Save it to C:\InFuseDownloads\cmake-3.31.6-windows-x86_64.zip.
+Extract it using:
+  Expand-Archive -LiteralPath C:\InFuseDownloads\cmake-3.31.6-windows-x86_64.zip -DestinationPath C:\InFuseDeps
+Check:
+  & C:\InFuseDeps\cmake-3.31.6-windows-x86_64\bin\cmake.exe --version
+
+5. Fetch OpenCV, compile InFuse, and test
+---------------------------------------
+Run this in a normal PowerShell session:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\scripts\build_windows.ps1
+
+The script downloads the official OpenCV 4.4.0 package, verifies its published
+SHA-256, extracts it to C:\InFuseDeps\opencv, configures a Visual Studio 2022
+x64 build, compiles Release, and runs CTest. Compiler/interpreter installation
+is documented above because the Windows instructions route is used.
+The pinned package and checksum are in C:\InFuse\reproducibility\dependencies.json.
+
+The manual equivalent after OpenCV extraction is:
+  & C:\InFuseDeps\cmake-3.31.6-windows-x86_64\bin\cmake.exe -S C:\InFuse -B C:\InFuse\build -G "Visual Studio 17 2022" -A x64 -DOpenCV_DIR=C:\InFuseDeps\opencv\build\x64\vc15\lib -DPython3_EXECUTABLE=C:\InFuseDeps\Python312\python.exe -DBUILD_TESTING=ON
+  & C:\InFuseDeps\cmake-3.31.6-windows-x86_64\bin\cmake.exe --build C:\InFuse\build --config Release --parallel 4
+  & C:\InFuseDeps\cmake-3.31.6-windows-x86_64\bin\ctest.exe --test-dir C:\InFuse\build -C Release --output-on-failure
+
+Executable: C:\InFuse\build\Release\infuse.exe
+Generated solution: C:\InFuse\build\InFuse.sln
+OpenCV DLL, config.ini, and slice templates are copied beside the executable.
+
+6. Generate results without parameters
+--------------------------------------
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\reproduce.ps1
+
+The workflow reads C:\InFuse\reproducibility\experiment.json and processes the
+included C:\InFuse\examples\models\bunny_outer.stl in single-cavity shell mode.
+It exports a CSV table, JSON metrics, XZ toolpath projection, OBJ meshes, and G-code under a
+new C:\InFuse\results\reproduction\TIMESTAMP directory. Inspect
+C:\InFuse\results\reproduction\latest_run.txt for the exact relative path.
+
+Current scope: the author-selected bunny model and single-cavity workflow.
+The corresponding author must identify the accepted paper's figure/table before
+GRSI submission. See C:\InFuse\reproducibility\GRSI_CHECKLIST.md.
+
+7. Troubleshooting
+------------------
+If CMake cannot find a compiler, add the C++ workload to Visual Studio 2022.
+If OpenCV is not found, use the exact vc15/lib configuration directory above;
+the old package's top-level OpenCVConfig.cmake does not recognize recent MSVC.
+If network downloads are blocked, download the official OpenCV package from
+  https://github.com/opencv/opencv/releases/tag/4.4.0
+and extract it to C:\InFuseDeps (the result must be C:\InFuseDeps\opencv).
+Do not link both release and debug OpenCV binaries in the same configuration.
+
+For an existing development environment, build_windows.ps1 also accepts
+-OpenCVDir, -CMakePath, and -PythonPath with complete absolute paths.
+Fresh-OS installation has not yet been verified in a clean virtual machine;
+the author's current Windows 11 validation environment is recorded separately.

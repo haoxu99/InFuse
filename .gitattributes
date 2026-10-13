@@ -1,0 +1,15 @@
+* text=auto
+*.cpp text eol=lf
+*.h text eol=lf
+*.hpp text eol=lf
+*.md text eol=lf
+*.cmake text eol=lf
+CMakeLists.txt text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.stl text eol=lf
+*.ini text eol=lf
+# Preserve the supplied model bytes and their recorded SHA-256 across Git checkouts.
+examples/models/*.stl -text

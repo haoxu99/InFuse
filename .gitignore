@@ -1,0 +1,15 @@
+/build*/
+/results/
+/.vs/
+/CMakeUserPresets.json
+/downloads/
+/dependencies/
+/dist/
+__pycache__/
+*.pyc
+*.user
+*.exe
+*.dll
+*.lib
+*.obj
+*.pdb

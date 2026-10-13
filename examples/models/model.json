@@ -1,0 +1,17 @@
+{
+  "filename": "bunny_outer.stl",
+  "source_filename": "AnyConv.com__bunny_outer.stl",
+  "provided_by": "Project author",
+  "format": "ASCII STL",
+  "size_bytes": 9226152,
+  "triangle_count": 44644,
+  "coordinate_units": "millimeters",
+  "bounds_min": [-40.8461, -6.2647, -39.2551],
+  "bounds_max": [40.8365, 56.2023, 38.2751],
+  "sha256": "e556e16429296d7936d32f0d5adb96b8a04db431518c3610de93ea2bb1eb0428",
+  "geometry_modified": false,
+  "workflow": "Single cavity",
+  "cli_mode": "shell",
+  "original_source_url": null,
+  "redistribution_license": "Pending author documentation"
+}

@@ -1,0 +1,11 @@
+{
+  "experiment_name": "synthetic_cylinder_demo",
+  "scope": "Measured synthetic demonstration, not a paper figure/table",
+  "recorded_date": "2026-10-13",
+  "input_sha256": "6dc2d0e27d40ef26cb92a4ff650eac19d85e049d5578759c4e3257cb966fa1e2",
+  "configuration_sha256": "5d9c3ea5143f3238e94e2873ecd5c3f7fbf94eb9d95f47de78f5301bd04b33eb",
+  "metrics": [
+    {"mode": "shell", "patch_count": 2, "polyline_count": 25, "point_count": 271, "layer_record_count": 4, "injection_layer_count": 1, "solid_layer_count": 0, "polyline_length_mm": 91.693822, "inter_polyline_gap_mm": 17.782406},
+    {"mode": "fusion", "patch_count": 1, "polyline_count": 34, "point_count": 494, "layer_record_count": 8, "injection_layer_count": 1, "solid_layer_count": 0, "polyline_length_mm": 164.194372, "inter_polyline_gap_mm": 20.654611}
+  ]
+}

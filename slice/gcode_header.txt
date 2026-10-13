@@ -1,0 +1,23 @@
+; Machine-specific startup template inherited from a Snapmaker 2.0 A350 setup.
+; Review temperatures, travel coordinates, and injection calibration for your hardware.
+T0
+M82 ;absolute extrusion mode
+;Start GCode begin
+G28 ;home
+M104 S210
+M104 T1 S200
+M140 S65
+M109 S210 ;Wait for Hotend Temperature
+M190 S65 ;Wait for Bed Temperature
+G90 ;absolute positioning
+G0 X-10 Y-10 F3000
+G0 Z0 F1800
+G92 E0
+G1 E20 F200
+G0 X0 Y0 F3000 ;Move to origin
+G0 Z1 F1800 ;Move up to avoid scraping against heated bed
+G92 E0
+;Start GCode end
+G92 E0
+G92 E0
+G1 F2100 E-1
