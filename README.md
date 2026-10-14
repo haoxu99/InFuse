@@ -94,7 +94,6 @@ If you use the code for your research, please cite the paper:
 }
 ```
 
-Both entries are available in [REFERENCES.bib](REFERENCES.bib). The InFuse entry refers specifically to the linked preprint version.
 
 ## Third-party terms
 
