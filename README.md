@@ -80,7 +80,7 @@ Software execution requires no printer or GPU and does not perform physical moti
 
 ## Citation
 
-If this code is used for research, please cite the InFuse preprint:
+If you use the code for your research, please cite the paper:
 
 ```bibtex
 @article{xu2025infuse,
@@ -91,21 +91,6 @@ If this code is used for research, please cite the InFuse preprint:
   doi     = {10.36227/techrxiv.175329147.74597084/v1},
   url     = {https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.175329147.74597084/v1},
   note    = {Preprint, version 1}
-}
-```
-
-The implementation also builds on ACAP. Please acknowledge the upstream framework and cite its paper:
-
-```bibtex
-@article{zhong2023continuous,
-  title={As-continuous-as-possible Extrusion-based Fabrication of Surface Models},
-  author={Zhong, Fanchao and Xu, Yonglai and Zhao, Haisen and Lu, Lin},
-  journal={ACM Transactions on Graphics},
-  volume={42},
-  number={3},
-  pages={1--16},
-  year={2023},
-  publisher={ACM New York, NY}
 }
 ```
 
