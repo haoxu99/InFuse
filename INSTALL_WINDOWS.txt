@@ -13,10 +13,9 @@ Use these fixed directories on a fresh Windows 11 x64 installation:
 
 1. Place the source package
 --------------------------
-Download the InFuse source archive from the project's GitHub release or obtain
-the supplied InFuse_source.zip. Extract its InFuse folder to C:\InFuse.
-Check that C:\InFuse\CMakeLists.txt exists. The repository URL is to be entered
-by the corresponding author in C:\InFuse\submission.txt before publication.
+Download a source snapshot from https://github.com/haoxu99/InFuse or clone the
+repository. Place the repository contents directly in C:\InFuse, without an
+extra nested directory. Check that C:\InFuse\CMakeLists.txt exists.
 
 Open PowerShell as Administrator for initial software installation. Create:
   New-Item -ItemType Directory -Path C:\InFuseDownloads,C:\InFuseDeps -Force
@@ -87,9 +86,9 @@ It exports a CSV table, JSON metrics, XZ toolpath projection, OBJ meshes, and G-
 new C:\InFuse\results\reproduction\TIMESTAMP directory. Inspect
 C:\InFuse\results\reproduction\latest_run.txt for the exact relative path.
 
-Current scope: the author-selected bunny model and single-cavity workflow.
-The corresponding author must identify the accepted paper's figure/table before
-GRSI submission. See C:\InFuse\reproducibility\GRSI_CHECKLIST.md.
+The default example runs the Bunny model using the single-cavity workflow and
+compares exported path metrics against the recorded regression baseline.
+Metric definitions are in C:\InFuse\reproducibility\OUTPUT_FORMATS.md.
 
 7. Troubleshooting
 ------------------
@@ -104,4 +103,4 @@ Do not link both release and debug OpenCV binaries in the same configuration.
 For an existing development environment, build_windows.ps1 also accepts
 -OpenCVDir, -CMakePath, and -PythonPath with complete absolute paths.
 Fresh-OS installation has not yet been verified in a clean virtual machine;
-the author's current Windows 11 validation environment is recorded separately.
+the tested Windows 11 environment is recorded in reproducibility\VALIDATION.md.

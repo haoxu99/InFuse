@@ -1,49 +1,54 @@
 # InFuse
 
-InFuse is a research implementation of extrusion and injection toolpath planning. It processes ASCII STL models through slicing, injection-layer detection, graph fusion and patch merging, travel-order optimization, interlayer gap filling, and G-code/OBJ export.
+InFuse is a computational fabrication framework for in-situ 3D printing and material injection. It plans interleaved printing and injection operations under printing, injection, air-evacuation, and nozzle-accessibility constraints.
 
-The project builds on the original [ACAP implementation](https://github.com/fanchao98/acap). InFuse is the name of this project; upstream attribution is preserved in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) and [REFERENCES.bib](REFERENCES.bib).
+This repository contains the C++ command-line implementation, Windows build instructions, and a reproducible single-cavity Bunny example. The implementation builds on and extends the [ACAP framework](https://github.com/fanchao98/acap) with injection-aware sequence planning and fabrication processing. Upstream attribution is listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-## Install and build
+**Paper:** [InFuse: In-Situ Material Injection for 3D Printing](https://doi.org/10.36227/techrxiv.175329147.74597084/v1), TechRxiv preprint, 2025. [PDF](https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.175329147.74597084/v1).
 
-The supported review platform is **Windows 11 x64**. Follow [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt) for complete installation steps on a fresh system, including fixed absolute paths, Visual Studio 2022 Community, Python, CMake, and OpenCV.
+## Installation
 
-After placing the repository at `C:\InFuse` and installing the compiler, Python, and CMake as documented:
+The supported platform is **Windows 11 x64**. [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt) documents Visual Studio 2022, Python, CMake, and OpenCV installation, including a complete setup using fixed absolute paths.
+
+With the source at `C:\InFuse` and the build tools installed as documented:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\scripts\build_windows.ps1
 ```
 
-The build script fetches and checksums OpenCV 4.4.0, compiles InFuse, and runs tests. Clipper 6.4.2 is included as source. There are no additional Python packages. CGAL, Boost, Eigen, libigl, GMP, and MPFR are not required.
+The script downloads and verifies OpenCV 4.4.0, builds InFuse, and runs the tests. Clipper 6.4.2 is included as source. No third-party Python packages are required. CGAL, Boost, Eigen, libigl, GMP, and MPFR are not build dependencies of this command-line implementation.
 
-The executable is `C:\InFuse\build\Release\infuse.exe`. The generated Visual Studio solution is `C:\InFuse\build\InFuse.sln`. OpenCV and runtime resources are copied beside the executable. Existing tool installations can be selected with the build script's absolute-path options described in INSTALL_WINDOWS.txt.
+The executable is `C:\InFuse\build\Release\infuse.exe`; the generated Visual Studio solution is `C:\InFuse\build\InFuse.sln`. OpenCV runtime files, configuration, and G-code templates are copied beside the executable. Existing tool installations can be selected using the build script options documented in [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt).
 
-## Generate reproducible data
+## Single-cavity Bunny example
 
-Run the parameter-free workflow:
+The parameter-free workflow runs the bundled Bunny model using the single-cavity shell pipeline:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\reproduce.ps1
 ```
 
-It runs the selected bunny outer model through the **single-cavity workflow (`--mode shell`)**, exports a table and XZ path projection, and compares numerical metrics with the recorded bunny reference. The STL is included at `C:\InFuse\examples\models\bunny_outer.stl`. Its geometry and scale are unchanged from the model supplied by the author. Every run uses a new output directory. `C:\InFuse\results\reproduction\latest_run.txt` identifies it.
+The experiment is defined in [reproducibility/experiment.json](reproducibility/experiment.json), with input `examples/models/bunny_outer.stl`. Each invocation creates an isolated output directory; `C:\InFuse\results\reproduction\latest_run.txt` identifies the latest successful run.
 
-- `table.csv` and `metrics.json`: path counts, layer types, lengths, and geometric gaps.
-- `toolpaths.svg`: XZ visualization derived from the generated bunny paths.
-- `shell/bunny_outer/patches`: patch OBJ meshes.
-- `run_manifest.json`: data/configuration hashes, commands, environment, timings, and reference-check status.
+| Output | Description |
+| --- | --- |
+| `table.csv`, `metrics.json` | Path counts, layer classifications, lengths, and geometric gaps |
+| `toolpaths.svg` | XZ projection of the generated paths, colored by patch |
+| `shell/bunny_outer/patches` | Patch OBJ meshes |
+| `shell/bunny_outer/Blocks_files` | Contour blocks and G-code |
+| `run_manifest.json` | Input/configuration hashes, commands, environment, timings, and reference comparison |
 
-The workflow uses [reproducibility/experiment.json](reproducibility/experiment.json). The bunny and single-cavity workflow have been selected by the author. The paper's figure/table number and publication metadata still need to be filled in; this package does not assume which paper figure the exported result corresponds to. Model format, checksum, and provenance are documented in [examples/models/README.md](examples/models/README.md). Custom output formats and metric definitions are documented in [OUTPUT_FORMATS.md](reproducibility/OUTPUT_FORMATS.md).
+Numerical outputs are compared with the recorded Bunny regression baseline. [OUTPUT_FORMATS.md](reproducibility/OUTPUT_FORMATS.md) defines the formats and metrics; [VALIDATION.md](reproducibility/VALIDATION.md) documents the measured environment, baseline, and validation scope. These metrics describe the exported paths and are not physical fabrication-time estimates or a reproduction of all paper benchmark tables.
 
-The measured bunny [table](reproducibility/reference_bunny/table.csv) and [path projection](reproducibility/reference_bunny/toolpaths.svg) are included for inspection:
+The [reference table](reproducibility/reference_bunny/table.csv) and [path projection](reproducibility/reference_bunny/toolpaths.svg) are included:
 
-![InFuse bunny single-cavity toolpaths](reproducibility/reference_bunny/toolpaths.svg)
+![InFuse Bunny single-cavity toolpaths](reproducibility/reference_bunny/toolpaths.svg)
 
-The small cylinder at `examples/demo.stl` remains a quick regression-test input; it is no longer the default reproduction model. Its earlier measurements are retained under `reproducibility/synthetic_demo` and are separate from the bunny reference.
+The recorded run took approximately 5 minutes 37 seconds and produced five patch meshes. Runtime depends on the machine. Detailed OBJ outputs total approximately 360 MB and are generated locally rather than bundled. Model properties and provenance are documented in [examples/models/README.md](examples/models/README.md).
 
-The measured bunny run took approximately 5 minutes 37 seconds on the documented test computer and produced 5 patch meshes. Runtime depends on the machine. The detailed OBJ outputs total approximately 360 MB and are regenerated under `results`; they are not bundled in the GitHub source package. The source archive includes the unchanged STL and reference table/projection.
+The small cylinder in `examples/demo.stl` is a quick regression input; its separate baseline is stored in `reproducibility/synthetic_demo`.
 
-## Run your own models
+## Command-line usage
 
 ```powershell
 & C:\InFuse\build\Release\infuse.exe --input C:\InFuse\examples\models\bunny_outer.stl --output C:\InFuse\results\bunny --mode shell
@@ -51,38 +56,61 @@ The measured bunny run took approximately 5 minutes 37 seconds on the documented
 & C:\InFuse\build\Release\infuse.exe --input C:\InFuse\input_models --output C:\InFuse\results\batch --mode shell
 ```
 
-Folder input scans direct children in sorted order; `.stl` and `.STL` are accepted. Input must be **ASCII STL**, in millimeters. Existing per-model output folders are rejected to prevent stale block data from contaminating a run. Choose a new output root to repeat it.
+Input must be **ASCII STL**, with coordinates in millimeters. Folder input processes direct children in sorted order and accepts `.stl` and `.STL`. Existing per-model output directories are rejected to prevent stale data from contaminating results; repeated runs require a new output location.
 
-| Option | Meaning |
+| Option | Description |
 | --- | --- |
-| `--input` | Required ASCII STL file or folder |
+| `--input` | Required ASCII STL file or directory |
 | `--output` | Output root; defaults to `results` |
-| `--mode shell` | Single-cavity shell pipeline; default and bunny experiment mode |
+| `--mode shell` | Single-cavity shell pipeline; default mode |
 | `--mode fusion` | Outer/inner slicing and fusion pipeline |
-| `--config` | Slicing configuration; default current/executable folder `config.ini` |
-| `--templates` | G-code template folder; default current/executable folder `slice` |
+| `--config` | Configuration file; defaults to `config.ini` in the current or executable directory |
+| `--templates` | G-code template directory; defaults to `slice` in the current or executable directory |
 | `--help` | Usage information |
 
-Each model produces `Blocks_files` (contours and G-code), `patches` (OBJ meshes), and `work` (slice layers, injection order, paths, and diagnostics). The return code is zero only when every model succeeds.
+Each model produces `Blocks_files`, `patches`, and `work` directories. The process returns zero only when all requested models succeed.
 
-## Validation and limitations
+## Testing and limitations
 
-The tests exercise both pipelines, single/batch numerical equivalence, output isolation, and invalid inputs. A second audit checks English-only filenames/text, InFuse naming, and local includes. [VALIDATION.md](reproducibility/VALIDATION.md) records the tested environment and results. A GitHub Actions Windows workflow is included; its remote run is pending publication.
+The included tests cover both pipelines, single/batch numerical equivalence, output isolation, invalid inputs, source consistency, and example-model integrity. A GitHub Actions workflow automates Windows builds, tests, and the Bunny example.
 
-The retained graph has a 10,000-node capacity. Large or non-manifold models may violate assumptions of the research algorithms. Layer spacing is 0.2 mm and extrusion width is 0.4 mm in `opp/helpers.h`; keep `config.ini` consistent. Nozzle geometry is in `opp/infuse_main.cpp`. Mixing ratio, gap optimization, merging strength, and beam width are in `opp/helpers.h`.
+The dependency graph has a 10,000-node capacity. Large or non-manifold models may violate algorithmic assumptions. Layer spacing is 0.2 mm and extrusion width is 0.4 mm in `opp/helpers.h`; `config.ini` must remain consistent. Nozzle geometry is defined in `opp/infuse_main.cpp`; mixing ratio, gap optimization, merging strength, and beam width are defined in `opp/helpers.h`.
 
-The startup/shutdown templates and injection calibration are machine-specific. Software replication requires no printer or GPU and does not execute physical motion. Inspect and adapt G-code before using a printer. Linux and macOS have not been validated. Full paper-dataset regression and clean-VM installation remain pending.
+Software execution requires no printer or GPU and does not perform physical motion. G-code startup/shutdown templates and injection calibration are machine-specific and must be adapted before physical fabrication. Linux and macOS support has not been validated. The command-line package does not include the interactive interface or hardware-control software.
 
-## GitHub and GRSI preparation
+## Citation
 
-Upload the contents of this InFuse folder as the repository root, including dotfiles and `.github`. Generated builds, SDKs, and result folders are ignored. The source archive includes no compiled binaries or private datasets. [GITHUB_RELEASE.md](reproducibility/GITHUB_RELEASE.md) describes publication and archival steps.
+If this code is used for research, please cite the InFuse preprint:
 
-Preparation is tracked against the [GRSI requirements](https://www.replicabilitystamp.org/requirements.html) in [GRSI_CHECKLIST.md](reproducibility/GRSI_CHECKLIST.md). The repository includes [submission.txt](submission.txt), precise Windows installation instructions, the parameter-free experiment, documented outputs, and an unsigned review-form preparation record.
+```bibtex
+@article{xu2025infuse,
+  title   = {{InFuse}: In-Situ Material Injection for {3D} Printing},
+  author  = {Xu, Hao and Feng, Shuai and Xiong, Yi and He, Liang and Xu, Wenpeng and Zhao, Haisen},
+  journal = {TechRxiv},
+  year    = {2025},
+  doi     = {10.36227/techrxiv.175329147.74597084/v1},
+  url     = {https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.175329147.74597084/v1},
+  note    = {Preprint, version 1}
+}
+```
 
-The paper title/authors and figure/table mapping, signed review permission, and code/model release permissions are still author actions. No stamp approval or complete submission compliance is claimed.
+The implementation also builds on ACAP. Please acknowledge the upstream framework and cite its paper:
 
-## License and provenance
+```bibtex
+@article{zhong2023continuous,
+  title={As-continuous-as-possible Extrusion-based Fabrication of Surface Models},
+  author={Zhong, Fanchao and Xu, Yonglai and Zhao, Haisen and Lu, Lin},
+  journal={ACM Transactions on Graphics},
+  volume={42},
+  number={3},
+  pages={1--16},
+  year={2023},
+  publisher={ACM New York, NY}
+}
+```
 
-No project-wide release license has been assigned. The upstream ACAP README restricts use to research and does not explicitly grant derivative redistribution/relicensing. Confirm the permissions applicable to your copy before publishing; see [LICENSE_STATUS.md](LICENSE_STATUS.md). A citation does not replace permission. Original Clipper and slicer notices are preserved.
+Both entries are available in [REFERENCES.bib](REFERENCES.bib). The InFuse entry refers specifically to the linked preprint version.
 
-Cite the original ACAP method when using it. Add the InFuse paper's title, authors, DOI, and citation once supplied. [CLEANUP.md](CLEANUP.md) describes the retained algorithms and removed legacy modules.
+## Third-party terms
+
+Third-party components retain their respective notices and terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). This repository does not grant an additional project-wide license.

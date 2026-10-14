@@ -1,7 +1,6 @@
 {
   "name": "bunny_single_cavity",
-  "status": "author_selected_model_pending_paper_figure_mapping",
-  "paper_figure_or_table": null,
+  "type": "regression_example",
   "input": "examples/models/bunny_outer.stl",
   "configuration": "config.ini",
   "templates": "slice",
@@ -9,5 +8,5 @@
   "timeout_seconds_per_mode": 7200,
   "projection_axes": [0, 2],
   "display_title": "InFuse bunny: single-cavity toolpaths",
-  "description": "Run the author-selected bunny outer model in the single-cavity shell pipeline, then export meshes, numerical metrics, and an XZ path projection."
+  "description": "Process the bundled Bunny model using the single-cavity shell pipeline and export meshes, numerical path metrics, and an XZ projection."
 }

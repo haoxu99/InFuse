@@ -1,10 +1,12 @@
-# InFuse third-party notices
+# Third-party acknowledgments and notices
 
-| Component | Role | Notice |
+InFuse builds on the [ACAP framework](https://github.com/fanchao98/acap) by Fanchao Zhong, Yonglai Xu, Haisen Zhao, and Lin Lu, extending its fabrication-planning implementation for in-situ printing and material injection. The upstream paper is cited in [REFERENCES.bib](REFERENCES.bib).
+
+| Component | Role | Applicable notice |
 | --- | --- | --- |
-| [ACAP](https://github.com/fanchao98/acap) | Basis of the path-planning implementation | Research-use restriction in upstream README; see LICENSE_STATUS.md |
-| [Katana](https://github.com/Kandepet/katana) / [Schlizzer](https://github.com/dronus/Schlizzer) | Slicer ancestry credited in slice/katana.cpp | Original attribution retained; the exact imported version and redistribution terms remain to be established |
-| Clipper 6.4.2, Angus Johnson | Included polygon clipping and offsetting implementation | Boost Software License 1.0; source notices retained in slice/clipper.cpp and slice/clipper.hpp; full text in licenses/BSL-1.0.txt |
-| [OpenCV](https://opencv.org/) | External dependency for geometric operations | Obtain separately and retain the license accompanying your chosen distribution; no OpenCV SDK is bundled in this source package |
+| [ACAP](https://github.com/fanchao98/acap) | Upstream fabrication-planning framework | The upstream README reserves program rights to its authors and restricts use to research purposes; see the [upstream terms](https://github.com/fanchao98/acap#license). |
+| [Katana](https://github.com/Kandepet/katana) / [Schlizzer](https://github.com/dronus/Schlizzer) | Slicer ancestry | Original attribution is retained in `slice/katana.cpp`. No additional license for these inherited files is granted here. |
+| Clipper 6.4.2, Angus Johnson | Polygon clipping and offsetting | Boost Software License 1.0; original notices remain in `slice/clipper.cpp` and `slice/clipper.hpp`. The license text is included in [licenses/BSL-1.0.txt](licenses/BSL-1.0.txt). |
+| [OpenCV](https://opencv.org/) 4.4.0 | External geometry-processing dependency | BSD 3-Clause and the component notices accompanying the distribution. The OpenCV SDK is downloaded separately and is not bundled in this repository. |
 
-Removing unused upstream modules does not remove the obligations attached to the code still retained. This file records provenance; it does not grant additional permissions.
+Third-party notices apply to their respective components. Attribution and paper citations do not grant additional rights to inherited code. No project-wide license is supplied for the combined implementation. Example-data provenance is documented separately in [examples/models/README.md](examples/models/README.md).

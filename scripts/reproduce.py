@@ -162,7 +162,7 @@ def main():
                         assert actual[key] == value, f'Metric mismatch: {key}: {actual[key]} vs {value}'
             run_record['reference_check'] = 'passed'
         else:
-            raise ValueError('The experiment has changed. Record corresponding author-approved expected metrics before validation.')
+            raise ValueError('The experiment input or configuration differs from the recorded baseline. Generate and verify a matching baseline before comparison.')
     (output/'run_manifest.json').write_text(json.dumps(run_record,indent=2)+'\n',encoding='utf-8')
     latest = ROOT/'results'/'reproduction'/'latest_run.txt'
     latest.write_text(str(output.relative_to(ROOT)).replace(os.sep,'/')+'\n',encoding='utf-8')

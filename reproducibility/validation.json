@@ -11,14 +11,11 @@
   "english_source_distribution": "passed",
   "parameter_free_bunny_single_cavity": "passed",
   "bunny_runtime_seconds": 336.689,
-  "bunny_model_integrity": "identical SHA-256 to the supplied model",
+  "bunny_model_integrity": "SHA-256 verified against examples/models/model.json",
   "bunny_patch_count": 5,
   "bunny_reference": "baseline recorded from successful run; saved-output comparison passed",
   "independent_second_full_bunny_run": "not_performed",
-  "original_source_integrity": "59 original source/resource files unchanged",
   "clean_windows_installation": "not_tested",
-  "github_actions": "not_run_remotely",
-  "paper_figure_replication": "bunny and single-cavity workflow selected; figure/table mapping pending",
-  "signed_review_form": "pending_author_action",
-  "release_license": "pending_author_confirmation"
+  "record_type": "local_regression_validation",
+  "scope": "Command-line pipelines and bundled Bunny regression example; no full-paper benchmark or physical fabrication validation"
 }
