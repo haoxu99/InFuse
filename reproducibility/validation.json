@@ -14,8 +14,24 @@
   "bunny_model_integrity": "SHA-256 verified against examples/models/model.json",
   "bunny_patch_count": 5,
   "bunny_reference": "baseline recorded from successful run; saved-output comparison passed",
-  "independent_second_full_bunny_run": "not_performed",
+  "independent_second_full_bunny_run": "passed_2026-10-25",
   "clean_windows_installation": "not_tested",
   "record_type": "local_regression_validation",
-  "scope": "Command-line pipelines and bundled Bunny regression example; no full-paper benchmark or physical fabrication validation"
+  "scope": "Command-line pipelines and Figure 16 Bunny geometry/stage data; no full-paper benchmark or physical fabrication validation",
+  "figure_data_verification": {
+    "date": "2026-10-25",
+    "paper_doi": "10.36227/techrxiv.175329147.74597084/v1",
+    "target": "Figure 16, Bunny row; PDF page 12 including the cover",
+    "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\\InFuse\\reproduce.ps1",
+    "parameter_free_run": "passed",
+    "application_runtime_seconds": 336.574,
+    "printing_stages": 5,
+    "injection_events": 4,
+    "stage_event_count_check": "passed",
+    "numerical_reference_check": "passed",
+    "ctest": "3 of 3 passed; 56.53 seconds",
+    "stage_exporter_unit_cases": 4,
+    "preview_visual_inspection": "passed",
+    "paper_table_replication": "not_claimed"
+  }
 }

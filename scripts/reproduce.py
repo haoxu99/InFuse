@@ -11,6 +11,7 @@ import platform
 import subprocess
 import sys
 import time
+from paper_result import export_paper_result
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -106,6 +107,8 @@ def main():
     if len(sys.argv)!=1:
         raise ValueError('Run this script without parameters; edit reproducibility/experiment.json to configure the experiment.')
     manifest = json.loads((ROOT/'reproducibility'/'experiment.json').read_text(encoding='utf-8'))
+    if manifest.get('paper_result') is not None and manifest['modes'] != ['shell']:
+        raise ValueError('The Bunny paper-figure experiment requires exactly the shell workflow.')
     binary = next((p for p in (ROOT/'build'/'Release'/'infuse.exe',ROOT/'build'/'infuse',ROOT/'build'/'infuse.exe') if p.is_file()),None)
     if binary is None:
         raise FileNotFoundError('Build InFuse first; see INSTALL_WINDOWS.txt.')
@@ -137,11 +140,13 @@ def main():
         writer.writerows(records)
     (output/'metrics.json').write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
     (output/'toolpaths.svg').write_text(projection_svg(records,patch_sets,manifest),encoding='utf-8')
+    paper_report = export_paper_result(output, output/'shell'/model.stem, model.stem, patch_sets[0], manifest)
     run_record = {'experiment':manifest,'input_sha256':hashlib.sha256(model.read_bytes()).hexdigest(),
                   'configuration_sha256':hashlib.sha256(config.read_bytes()).hexdigest(),
                   'binary_sha256':hashlib.sha256(binary.read_bytes()).hexdigest(),'commands':commands,
                   'platform':platform.platform(),'python':sys.version.split()[0],'elapsed_seconds':times,
-                  'git_commit':None,'reference_check':'not_available'}
+                  'git_commit':None,'reference_check':'not_available',
+                  'paper_result_check':paper_report['stage_event_count_check'] if paper_report else 'not_requested'}
     try:
         repository_root = subprocess.check_output(['git','-C',str(ROOT),'rev-parse','--show-toplevel'],stderr=subprocess.DEVNULL,text=True).strip()
         if Path(repository_root).resolve() == ROOT:

@@ -86,9 +86,12 @@ It exports a CSV table, JSON metrics, XZ toolpath projection, OBJ meshes, and G-
 new C:\InFuse\results\reproduction\TIMESTAMP directory. Inspect
 C:\InFuse\results\reproduction\latest_run.txt for the exact relative path.
 
-The default example runs the Bunny model using the single-cavity workflow and
-compares exported path metrics against the recorded regression baseline.
-Metric definitions are in C:\InFuse\reproducibility\OUTPUT_FORMATS.md.
+The target is the Bunny row of Figure 16 in TechRxiv preprint v1 (PDF page 12,
+including its cover). The script computes P1-P5 and I1-I4, exports incremental
+OBJ meshes, paper_stages.csv, injection_events.csv, paper_figure.svg, and
+paper_result.json, and compares numerical outputs with the regression baseline.
+The README maps each paper stage to its mesh and explains cumulative viewing.
+Figure-data formats are in C:\InFuse\reproducibility\PAPER_RESULT.txt.
 
 7. Troubleshooting
 ------------------

@@ -20,33 +20,71 @@ The script downloads and verifies OpenCV 4.4.0, builds InFuse, and runs the test
 
 The executable is `C:\InFuse\build\Release\infuse.exe`; the generated Visual Studio solution is `C:\InFuse\build\InFuse.sln`. OpenCV runtime files, configuration, and G-code templates are copied beside the executable. Existing tool installations can be selected using the build script options documented in [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt).
 
-## Single-cavity Bunny example
+## Reproduce a paper result: Figure 16 (Bunny)
 
-The parameter-free workflow runs the bundled Bunny model using the single-cavity shell pipeline:
+**Target:** the **Bunny row of Figure 16, "Gallery of results generated using InFuse planner"**, in [TechRxiv preprint v1](https://doi.org/10.36227/techrxiv.175329147.74597084/v1). It is on **PDF page 12**, counting the TechRxiv cover. The PDF already included in this repository is `techrxiv.175329147.74597084%2Fv1.pdf`. Figure numbers are version-specific: the target here is Figure 16 of that submitted preprint, not a figure number inferred from a later manuscript.
+
+The reproducible part is the Bunny printing-stage geometry and injection-event data: **P1, I1, P2, I2, P3, I3, P4, I4, P5**. The script executes the planner and exports five incremental OBJ meshes and four injection centers, together with a cumulative-stage SVG preview. It does not copy the paper image or use precomputed meshes instead of running the algorithm. No printer or GPU is required.
+
+### 1. Install and build
+
+Place the repository at `C:\InFuse` and follow [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt) to install the documented build tools. Then run:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\scripts\build_windows.ps1
+```
+
+### 2. Run the figure-data script without parameters
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\reproduce.ps1
 ```
 
-The experiment is defined in [reproducibility/experiment.json](reproducibility/experiment.json), with input `examples/models/bunny_outer.stl`. Each invocation creates an isolated output directory; `C:\InFuse\results\reproduction\latest_run.txt` identifies the latest successful run.
+No model selection, command-line parameters, interactive interface, manual path edits, or external dataset download is needed. The fixed input is `C:\InFuse\examples\models\bunny_outer.stl`, processed in single-cavity `shell` mode using `C:\InFuse\config.ini`. The target and inputs are recorded in [reproducibility/experiment.json](reproducibility/experiment.json). Input properties and checksum are in [examples/models/README.md](examples/models/README.md).
 
-| Output | Description |
+Allow approximately **5-10 minutes** on the documented desktop; slower machines may take longer. The example produces approximately 360 MB of OBJ meshes plus paths and G-code. Each run creates a new `C:\InFuse\results\reproduction\TIMESTAMP` directory. A failed computation or comparison returns a nonzero exit code; a successful run prints the result directory and `Reference check: passed`.
+
+### 3. Inspect the generated paper-result data
+
+After the command succeeds, open the newly generated stage preview and inspect the stage mapping:
+
+```powershell
+$infuseRun = Join-Path C:\InFuse (Get-Content -LiteralPath C:\InFuse\results\reproduction\latest_run.txt -Raw).Trim()
+Invoke-Item (Join-Path $infuseRun 'paper_figure.svg')
+Get-Content -LiteralPath (Join-Path $infuseRun 'paper_stages.csv')
+Get-Content -LiteralPath (Join-Path $infuseRun 'injection_events.csv')
+Get-Content -LiteralPath (Join-Path $infuseRun 'paper_result.json')
+```
+
+The following paths are relative to that new result directory:
+
+| Paper result | Generated data |
 | --- | --- |
-| `table.csv`, `metrics.json` | Path counts, layer classifications, lengths, and geometric gaps |
-| `toolpaths.svg` | XZ projection of the generated paths, colored by patch |
-| `shell/bunny_outer/patches` | Patch OBJ meshes |
-| `shell/bunny_outer/Blocks_files` | Contour blocks and G-code |
-| `run_manifest.json` | Input/configuration hashes, commands, environment, timings, and reference comparison |
+| P1, before I1 | `shell/bunny_outer/patches/patch_0.obj` |
+| P2, between I1 and I2 | `shell/bunny_outer/patches/patch_1.obj` |
+| P3, between I2 and I3 | `shell/bunny_outer/patches/patch_2.obj` |
+| P4, between I3 and I4 | `shell/bunny_outer/patches/patch_3.obj` |
+| P5, final printing/sealing | `shell/bunny_outer/patches/patch_4.obj` |
+| I1-I4 | `injection_events.csv`, ordered by execution, with XYZ positions in millimeters |
+| Left-to-right stage sequence | `paper_figure.svg`, generated from the new paths, and `paper_stages.csv` |
 
-Numerical outputs are compared with the recorded Bunny regression baseline. [OUTPUT_FORMATS.md](reproducibility/OUTPUT_FORMATS.md) defines the formats and metrics; [VALIDATION.md](reproducibility/VALIDATION.md) documents the measured environment, baseline, and validation scope. These metrics describe the exported paths and are not physical fabrication-time estimates or a reproduction of all paper benchmark tables.
+The OBJ meshes are **incremental printing stages**. To view the state after P3 in an OBJ-compatible viewer, load `patch_0.obj`, `patch_1.obj`, and `patch_2.obj` together in the same scene, without individually recentering them. In general, the state after Pk is the union of `patch_0.obj` through `patch_(k-1).obj`; `paper_stages.csv` lists these cumulative mesh sets explicitly. Injection coordinates use the same printing-platform frame as the OBJ meshes, rather than the original STL frame.
 
-The [reference table](reproducibility/reference_bunny/table.csv) and [path projection](reproducibility/reference_bunny/toolpaths.svg) are included:
+**Checks:** the Bunny result must contain five printing stages and four injection events, matching the labeled sequence in Figure 16. `paper_result.json` records this count check. `run_manifest.json` separately records `reference_check: passed`, input/configuration/binary hashes, the commands, environment, and timing. The numerical regression check compares the new output with [expected_metrics.json](reproducibility/expected_metrics.json); it is not an independent verification of every shape boundary in the paper image.
 
-![InFuse Bunny single-cavity toolpaths](reproducibility/reference_bunny/toolpaths.svg)
+Reference preview from the complete verification run on 2026-10-25 (the command above regenerates its SVG from new computation):
 
-The recorded run took approximately 5 minutes 37 seconds and produced five patch meshes. Runtime depends on the machine. Detailed OBJ outputs total approximately 360 MB and are generated locally rather than bundled. Model properties and provenance are documented in [examples/models/README.md](examples/models/README.md).
+![Computed cumulative Bunny stages for Figure 16](reproducibility/reference_bunny/figure16_bunny.png)
 
-The small cylinder in `examples/demo.stl` is a quick regression input; its separate baseline is stored in `reproducibility/synthetic_demo`.
+The recorded [stage mapping](reproducibility/reference_bunny/paper_stages.csv) and [injection coordinates](reproducibility/reference_bunny/injection_events.csv) are supplied for inspection. They are reference outputs, not inputs to the planner. The fresh run must generate its own meshes and CSV files.
+
+### Scope and file formats
+
+This target is the **Bunny part only** of the gallery. OBJ meshes and the injection CSV provide the geometric/stage data for inspecting the illustrated sequence; the script need not recreate the paper's lighting, camera, nozzle illustrations, injected-material rendering, or raster pixels. `paper_figure.svg` is a cumulative **XZ projection**, not a photorealistic 3D rendering. Other gallery models, physical fabrication, and the paper's benchmark Tables 1 and 2 are outside this workflow.
+
+The shipped example uses beam width 500 in `opp/helpers.h`; the preprint reports 7500 for its benchmark configuration. Accordingly, no claim is made that this package reproduces the exact search statistics, travel distances, or runtimes in those tables. The figure-data workflow retains the bundled geometry and current algorithm settings rather than silently tuning them to force agreement.
+
+OBJ, CSV, JSON, and SVG are standard formats. The custom nested path files and all new figure-output fields are documented in the plain-text [PAPER_RESULT.txt](reproducibility/PAPER_RESULT.txt) and [OUTPUT_FORMATS.md](reproducibility/OUTPUT_FORMATS.md). The latter also defines regression metrics, which are not physical fabrication-time estimates. The [reference table](reproducibility/reference_bunny/table.csv), [path projection](reproducibility/reference_bunny/toolpaths.svg), and [validation record](reproducibility/VALIDATION.md) provide supporting diagnostics. The small cylinder in `examples/demo.stl` remains a separate smoke-test input, not the paper-result target.
 
 ## Command-line usage
 

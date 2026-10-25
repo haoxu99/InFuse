@@ -47,10 +47,12 @@ for path in FILES:
                 continue
             assert (path.parent/target.split('#', 1)[0]).exists(), f'Broken documentation link: {path.relative_to(ROOT)}: {target}'
 readme = (ROOT/'README.md').read_text(encoding='utf-8')
-references = (ROOT/'REFERENCES.bib').read_text(encoding='utf-8')
-for entry in re.findall(r'```bibtex\n(.*?)\n```', readme, re.S):
-    assert entry.strip() in references, 'README citation differs from REFERENCES.bib.'
-assert '@article{xu2025infuse,' in references and '@article{zhong2023continuous,' in references, 'Missing project or upstream citation.'
+assert '@article{xu2025infuse,' in readme, 'Missing project citation.'
 assert 'https://github.com/fanchao98/acap' in readme, 'Missing upstream acknowledgment.'
-assert '10.36227/techrxiv.175329147.74597084/v1' in references, 'Incorrect preprint DOI.'
-print(f'PASS: {len(FILES)} publishable files; English text, source/model integrity, public documentation links, and project/upstream citations.')
+assert '10.36227/techrxiv.175329147.74597084/v1' in readme, 'Incorrect preprint DOI.'
+target = experiment['paper_result']
+assert target['figure'] == 'Figure 16' and target['pdf_page'] == 12, 'Incorrect submitted-paper target.'
+assert target['printing_stage_count'] == 5 and target['injection_event_count'] == 4, 'Incorrect paper-stage counts.'
+assert 'Figure 16' in readme and 'paper_stages.csv' in readme and 'injection_events.csv' in readme, 'Missing figure reproduction instructions.'
+assert (ROOT/'reproducibility'/'PAPER_RESULT.txt').is_file(), 'Missing plain-text figure-format specification.'
+print(f'PASS: {len(FILES)} publishable files; English text, source/model integrity, public links, citation, and paper-result instructions.')

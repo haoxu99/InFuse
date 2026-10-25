@@ -42,5 +42,7 @@ if(BUILD_TESTING)
         set_tests_properties(pipeline_smoke PROPERTIES TIMEOUT 900)
         add_test(NAME source_distribution COMMAND "${Python3_EXECUTABLE}"
             "${CMAKE_CURRENT_SOURCE_DIR}/tests/source_distribution.py")
+        add_test(NAME paper_result_export COMMAND "${Python3_EXECUTABLE}"
+            "${CMAKE_CURRENT_SOURCE_DIR}/tests/paper_result.py")
     endif()
 endif()

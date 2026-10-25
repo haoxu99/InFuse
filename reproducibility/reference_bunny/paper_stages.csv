@@ -1,0 +1,6 @@
+printing_stage,incremental_obj,cumulative_objs,next_event,printing_polylines
+P1,shell/bunny_outer/patches/patch_0.obj,shell/bunny_outer/patches/patch_0.obj,I1,8127
+P2,shell/bunny_outer/patches/patch_1.obj,shell/bunny_outer/patches/patch_0.obj;shell/bunny_outer/patches/patch_1.obj,I2,1590
+P3,shell/bunny_outer/patches/patch_2.obj,shell/bunny_outer/patches/patch_0.obj;shell/bunny_outer/patches/patch_1.obj;shell/bunny_outer/patches/patch_2.obj,I3,1026
+P4,shell/bunny_outer/patches/patch_3.obj,shell/bunny_outer/patches/patch_0.obj;shell/bunny_outer/patches/patch_1.obj;shell/bunny_outer/patches/patch_2.obj;shell/bunny_outer/patches/patch_3.obj,I4,9
+P5,shell/bunny_outer/patches/patch_4.obj,shell/bunny_outer/patches/patch_0.obj;shell/bunny_outer/patches/patch_1.obj;shell/bunny_outer/patches/patch_2.obj;shell/bunny_outer/patches/patch_3.obj;shell/bunny_outer/patches/patch_4.obj,complete,10

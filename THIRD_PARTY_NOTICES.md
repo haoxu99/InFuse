@@ -1,6 +1,6 @@
 # Third-party acknowledgments and notices
 
-InFuse builds on the [ACAP framework](https://github.com/fanchao98/acap) by Fanchao Zhong, Yonglai Xu, Haisen Zhao, and Lin Lu, extending its fabrication-planning implementation for in-situ printing and material injection. The upstream paper is cited in [REFERENCES.bib](REFERENCES.bib).
+InFuse builds on the [ACAP framework](https://github.com/fanchao98/acap) by Fanchao Zhong, Yonglai Xu, Haisen Zhao, and Lin Lu, extending its fabrication-planning implementation for in-situ printing and material injection. The upstream paper, "As-continuous-as-possible Extrusion-based Fabrication of Surface Models" (ACM Transactions on Graphics, 2023), is identified in the upstream repository.
 
 | Component | Role | Applicable notice |
 | --- | --- | --- |

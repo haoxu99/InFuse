@@ -1,12 +1,22 @@
 {
   "name": "bunny_single_cavity",
-  "type": "regression_example",
+  "type": "paper_figure_data",
+  "paper_result": {
+    "title": "InFuse: In-Situ Material Injection for 3D Printing",
+    "doi": "10.36227/techrxiv.175329147.74597084/v1",
+    "figure": "Figure 16",
+    "panel": "Bunny row, printing stages P1-P5 and injection events I1-I4",
+    "pdf_page": 12,
+    "pdf_page_note": "Includes the TechRxiv cover page",
+    "printing_stage_count": 5,
+    "injection_event_count": 4
+  },
   "input": "examples/models/bunny_outer.stl",
   "configuration": "config.ini",
   "templates": "slice",
   "modes": ["shell"],
   "timeout_seconds_per_mode": 7200,
   "projection_axes": [0, 2],
-  "display_title": "InFuse bunny: single-cavity toolpaths",
-  "description": "Process the bundled Bunny model using the single-cavity shell pipeline and export meshes, numerical path metrics, and an XZ projection."
+  "display_title": "InFuse Figure 16: Bunny single-cavity toolpaths",
+  "description": "Generate the Bunny printing-stage geometry and injection-event data for Figure 16 of TechRxiv v1, together with a cumulative-stage preview and regression metrics."
 }

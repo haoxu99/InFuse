@@ -1,0 +1,85 @@
+InFuse representative paper-result data
+======================================
+
+Reference: InFuse: In-Situ Material Injection for 3D Printing,
+TechRxiv v1, DOI 10.36227/techrxiv.175329147.74597084/v1.
+Target: Figure 16, Bunny row; PDF page 12 including the TechRxiv cover.
+The figure illustrates P1, I1, P2, I2, P3, I3, P4, I4, P5.
+Figure numbering is specific to this preprint version.
+
+After the Windows installation/build in INSTALL_WINDOWS.txt, run:
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\reproduce.ps1
+No application arguments or manual model selection are required.
+The run directory is identified by:
+  C:\InFuse\results\reproduction\latest_run.txt
+
+All paths below are relative to the selected run directory.
+
+1. Geometry and coordinates
+---------------------------
+shell/bunny_outer/patches/patch_0.obj through patch_4.obj are standard Wavefront
+OBJ files for incremental printing stages P1 through P5, respectively.
+The visible state after Pk is the union of patches 0 through k-1.
+Load them in one scene without separately recentering or rescaling each file.
+OBJ vertices may include RGB values after XYZ. These are printable path meshes,
+not watertight meshes of the injected liquid volume.
+
+Output coordinates are in millimeters in the printing-platform frame. The
+slicer translates XY to the platform center and moves the first layer to Z=0.2.
+No additional scaling is applied by the figure-data exporter. Original STL
+coordinates and Injection_Order.txt use a different frame; the injection CSV
+is read from postprocessed paths, so it agrees with the OBJ coordinates.
+
+2. paper_stages.csv (standard UTF-8 CSV with a header)
+----------------------------------------------------
+printing_stage: P1 through P5 in execution order.
+incremental_obj: relative path to the stage's OBJ mesh.
+cumulative_objs: semicolon-separated relative paths to load together for the
+                 state after this printing stage. This field is inside one CSV cell.
+next_event: I1 through I4, or complete after the final printing stage.
+printing_polylines: number of polylines containing at least two points.
+
+3. injection_events.csv (standard UTF-8 CSV with a header)
+--------------------------------------------------------
+event: I1 through I4 in execution order.
+after_printing_stage: the preceding printing stage, P1 through P4.
+layer_record_index: zero-based contour/layer record index in the ordered paths;
+                    this is not a physical Z-layer number.
+x_mm, y_mm, z_mm: injection center in the printing-platform/OBJ coordinate frame.
+
+4. paper_figure.svg and paper_result.json
+---------------------------------------
+paper_figure.svg contains five cumulative XZ projections generated from the
+newly computed paths. Colors distinguish printing stages; dots locate injection
+events. Projection collapses Y. This is a diagnostic stage visualization, not
+the paper's original image or a photorealistic rendering.
+
+paper_result.json records the exact paper/figure reference, mesh-stage mapping,
+coordinate frame, computed stage/event counts, and stage_event_count_check.
+A mismatch with the five printing stages/four injection events is a failure.
+This count check does not verify the exact geometry of every paper-image region.
+run_manifest.json independently records the numerical baseline comparison,
+input/configuration hashes, command, binary hash, Git revision, and environment.
+
+5. Custom raw path format
+------------------------
+shell/bunny_outer/work/bunny_outer_paths_step.txt uses whitespace-separated
+numbers with the following nesting (indentation here is explanatory):
+  printing_stage_count
+    polyline_count_for_stage
+      point_count_for_polyline
+        x y z
+        ...
+      ...
+    ...
+Each coordinate is in millimeters. Empty polylines have point count zero.
+*_paths.txt has the same nesting, but its outer records are ordered contour/layer
+records, not printing stages. A one-point polyline there marks an injection
+center. *_paths_step.txt separates printing at injection events and omits those
+center points; it is the source of patch_0.obj through patch_4.obj.
+Other custom files and regression metrics are defined in OUTPUT_FORMATS.md.
+
+Scope: the Bunny geometric printing/injection sequence in Figure 16 only.
+No printer is operated. Other models, injected-volume meshes, paper rendering,
+and Tables 1/2 benchmark reproduction are not included in this target. The
+distributed beam width is 500, whereas the preprint benchmark setting is 7500.
