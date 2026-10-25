@@ -47,9 +47,16 @@ for path in FILES:
                 continue
             assert (path.parent/target.split('#', 1)[0]).exists(), f'Broken documentation link: {path.relative_to(ROOT)}: {target}'
 readme = (ROOT/'README.md').read_text(encoding='utf-8')
-assert '@article{xu2025infuse,' in readme, 'Missing project citation.'
+assert '@article{xu2026infuse,' in readme, 'Missing published project citation.'
+citations = re.findall(r'```bibtex\s+(.*?)```', readme, re.DOTALL)
+assert len(citations) == 1, 'Expected one primary project citation.'
+citation = citations[0]
+assert '10.1109/TVCG.2026.3743432' in citation, 'Incorrect published article DOI.'
+assert 'https://ieeexplore.ieee.org/document/11735140' in citation, 'Incorrect published article URL.'
+assert '{IEEE Transactions on Visualization and Computer Graphics}' in citation, 'Incorrect journal.'
+assert '{Xu, Hao and Feng, Shuai and Xiong, Yi and Zeng, Qiong and Li, Manyi and He, Liang and Xu, Wenpeng and Zhao, Haisen}' in citation, 'Incorrect published author list.'
 assert 'https://github.com/fanchao98/acap' in readme, 'Missing upstream acknowledgment.'
-assert '10.36227/techrxiv.175329147.74597084/v1' in readme, 'Incorrect preprint DOI.'
+assert '10.36227/techrxiv.175329147.74597084/v1' in readme, 'Missing version-pinned reproduction reference.'
 target = experiment['paper_result']
 assert target['figure'] == 'Figure 16' and target['pdf_page'] == 12, 'Incorrect submitted-paper target.'
 assert target['printing_stage_count'] == 5 and target['injection_event_count'] == 4, 'Incorrect paper-stage counts.'

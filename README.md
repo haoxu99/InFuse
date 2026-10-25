@@ -4,7 +4,7 @@ InFuse is a computational fabrication framework for in-situ 3D printing and mate
 
 This repository contains the C++ command-line implementation, Windows build instructions, and a reproducible single-cavity Bunny example. The implementation builds on and extends the [ACAP framework](https://github.com/fanchao98/acap) with injection-aware sequence planning and fabrication processing. Upstream attribution is listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-**Paper:** [InFuse: In-Situ Material Injection for 3D Printing](https://doi.org/10.36227/techrxiv.175329147.74597084/v1), TechRxiv preprint, 2025. [PDF](https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.175329147.74597084/v1).
+**Paper:** [InFuse: Sequence Planning for In-Situ Printing and Material Injection](https://ieeexplore.ieee.org/document/11735140), *IEEE Transactions on Visualization and Computer Graphics*, 2026, pp. 1-18. [DOI: 10.1109/TVCG.2026.3743432](https://doi.org/10.1109/TVCG.2026.3743432).
 
 ## Installation
 
@@ -23,6 +23,8 @@ The executable is `C:\InFuse\build\Release\infuse.exe`; the generated Visual Stu
 ## Reproduce a paper result: Figure 16 (Bunny)
 
 **Target:** the **Bunny row of Figure 16, "Gallery of results generated using InFuse planner"**, in [TechRxiv preprint v1](https://doi.org/10.36227/techrxiv.175329147.74597084/v1). It is on **PDF page 12**, counting the TechRxiv cover. The PDF already included in this repository is `techrxiv.175329147.74597084%2Fv1.pdf`. Figure numbers are version-specific: the target here is Figure 16 of that submitted preprint, not a figure number inferred from a later manuscript.
+
+The citation below refers to the published TVCG article. The reproduction target remains pinned to the preprint version submitted for artifact evaluation; its figure numbering is not asserted to match the published article.
 
 The reproducible part is the Bunny printing-stage geometry and injection-event data: **P1, I1, P2, I2, P3, I3, P4, I4, P5**. The script executes the planner and exports five incremental OBJ meshes and four injection centers, together with a cumulative-stage SVG preview. It does not copy the paper image or use precomputed meshes instead of running the algorithm. No printer or GPU is required.
 
@@ -121,14 +123,14 @@ Software execution requires no printer or GPU and does not perform physical moti
 If you use the code for your research, please cite the paper:
 
 ```bibtex
-@article{xu2025infuse,
-  title   = {{InFuse}: In-Situ Material Injection for {3D} Printing},
-  author  = {Xu, Hao and Feng, Shuai and Xiong, Yi and He, Liang and Xu, Wenpeng and Zhao, Haisen},
-  journal = {TechRxiv},
-  year    = {2025},
-  doi     = {10.36227/techrxiv.175329147.74597084/v1},
-  url     = {https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.175329147.74597084/v1},
-  note    = {Preprint, version 1}
+@article{xu2026infuse,
+  title   = {{InFuse}: Sequence Planning for In-Situ Printing and Material Injection},
+  author  = {Xu, Hao and Feng, Shuai and Xiong, Yi and Zeng, Qiong and Li, Manyi and He, Liang and Xu, Wenpeng and Zhao, Haisen},
+  journal = {IEEE Transactions on Visualization and Computer Graphics},
+  year    = {2026},
+  pages   = {1--18},
+  doi     = {10.1109/TVCG.2026.3743432},
+  url     = {https://ieeexplore.ieee.org/document/11735140}
 }
 ```
 
