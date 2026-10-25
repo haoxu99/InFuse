@@ -2,12 +2,14 @@
   "name": "bunny_single_cavity",
   "type": "paper_figure_data",
   "paper_result": {
-    "title": "InFuse: In-Situ Material Injection for 3D Printing",
-    "doi": "10.36227/techrxiv.175329147.74597084/v1",
-    "figure": "Figure 16",
+    "title": "InFuse: Sequence Planning for In-Situ Printing and Material Injection",
+    "doi": "10.1109/TVCG.2026.3743432",
+    "url": "https://ieeexplore.ieee.org/document/11735140",
+    "version": "Final manuscript",
+    "figure": "Figure 14",
     "panel": "Bunny row, printing stages P1-P5 and injection events I1-I4",
-    "pdf_page": 12,
-    "pdf_page_note": "Includes the TechRxiv cover page",
+    "pdf_page": 11,
+    "pdf_page_note": "Final manuscript page numbering; no preprint cover page",
     "printing_stage_count": 5,
     "injection_event_count": 4
   },
@@ -17,6 +19,6 @@
   "modes": ["shell"],
   "timeout_seconds_per_mode": 7200,
   "projection_axes": [0, 2],
-  "display_title": "InFuse Figure 16: Bunny single-cavity toolpaths",
-  "description": "Generate the Bunny printing-stage geometry and injection-event data for Figure 16 of TechRxiv v1, together with a cumulative-stage preview and regression metrics."
+  "display_title": "InFuse Figure 14: Bunny single-cavity toolpaths",
+  "description": "Generate the Bunny printing-stage geometry and injection-event data for Figure 14 of the final TVCG manuscript, together with a cumulative-stage preview and regression metrics."
 }

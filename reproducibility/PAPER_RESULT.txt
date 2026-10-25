@@ -1,11 +1,13 @@
 InFuse representative paper-result data
 ======================================
 
-Reference: InFuse: In-Situ Material Injection for 3D Printing,
-TechRxiv v1, DOI 10.36227/techrxiv.175329147.74597084/v1.
-Target: Figure 16, Bunny row; PDF page 12 including the TechRxiv cover.
+Reference: InFuse: Sequence Planning for In-Situ Printing and Material Injection,
+IEEE Transactions on Visualization and Computer Graphics, 2026.
+DOI: 10.1109/TVCG.2026.3743432.
+Article: https://ieeexplore.ieee.org/document/11735140
+Target: Figure 14, Bunny row; page 11 of the final manuscript.
 The figure illustrates P1, I1, P2, I2, P3, I3, P4, I4, P5.
-Figure numbering is specific to this preprint version.
+Figure numbering follows the final manuscript.
 
 After the Windows installation/build in INSTALL_WINDOWS.txt, run:
   powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:\InFuse\reproduce.ps1
@@ -79,7 +81,8 @@ center. *_paths_step.txt separates printing at injection events and omits those
 center points; it is the source of patch_0.obj through patch_4.obj.
 Other custom files and regression metrics are defined in OUTPUT_FORMATS.md.
 
-Scope: the Bunny geometric printing/injection sequence in Figure 16 only.
+Scope: the Bunny geometric printing/injection sequence in Figure 14 only.
 No printer is operated. Other models, injected-volume meshes, paper rendering,
-and Tables 1/2 benchmark reproduction are not included in this target. The
-distributed beam width is 500, whereas the preprint benchmark setting is 7500.
+and Tables I/II benchmark reproduction are not included in this target. The
+distributed beam width is 500, whereas the final manuscript's Section VI-A
+benchmark setting is 7500.

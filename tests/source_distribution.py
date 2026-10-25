@@ -56,10 +56,17 @@ assert 'https://ieeexplore.ieee.org/document/11735140' in citation, 'Incorrect p
 assert '{IEEE Transactions on Visualization and Computer Graphics}' in citation, 'Incorrect journal.'
 assert '{Xu, Hao and Feng, Shuai and Xiong, Yi and Zeng, Qiong and Li, Manyi and He, Liang and Xu, Wenpeng and Zhao, Haisen}' in citation, 'Incorrect published author list.'
 assert 'https://github.com/fanchao98/acap' in readme, 'Missing upstream acknowledgment.'
-assert '10.36227/techrxiv.175329147.74597084/v1' in readme, 'Missing version-pinned reproduction reference.'
 target = experiment['paper_result']
-assert target['figure'] == 'Figure 16' and target['pdf_page'] == 12, 'Incorrect submitted-paper target.'
+assert target['doi'] == '10.1109/TVCG.2026.3743432', 'Incorrect paper-result DOI.'
+assert target['title'] == 'InFuse: Sequence Planning for In-Situ Printing and Material Injection', 'Incorrect paper-result title.'
+assert target['url'] == 'https://ieeexplore.ieee.org/document/11735140', 'Incorrect paper-result URL.'
+assert target['version'] == 'Final manuscript', 'Paper target must use the final manuscript.'
+assert target['figure'] == 'Figure 14' and target['pdf_page'] == 11, 'Incorrect final-manuscript target.'
 assert target['printing_stage_count'] == 5 and target['injection_event_count'] == 4, 'Incorrect paper-stage counts.'
-assert 'Figure 16' in readme and 'paper_stages.csv' in readme and 'injection_events.csv' in readme, 'Missing figure reproduction instructions.'
+assert 'Figure 14' in readme and 'paper_stages.csv' in readme and 'injection_events.csv' in readme, 'Missing figure reproduction instructions.'
+for filename in ('README.md', 'INSTALL_WINDOWS.txt', 'reproducibility/PAPER_RESULT.txt', 'reproducibility/OUTPUT_FORMATS.md', 'reproducibility/experiment.json'):
+    documentation = (ROOT/filename).read_text(encoding='utf-8')
+    assert 'Figure 14' in documentation, 'Missing final-manuscript figure: '+filename
+    assert 'Figure '+'16' not in documentation, 'Stale preprint figure: '+filename
 assert (ROOT/'reproducibility'/'PAPER_RESULT.txt').is_file(), 'Missing plain-text figure-format specification.'
 print(f'PASS: {len(FILES)} publishable files; English text, source/model integrity, public links, citation, and paper-result instructions.')

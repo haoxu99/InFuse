@@ -20,11 +20,9 @@ The script downloads and verifies OpenCV 4.4.0, builds InFuse, and runs the test
 
 The executable is `C:\InFuse\build\Release\infuse.exe`; the generated Visual Studio solution is `C:\InFuse\build\InFuse.sln`. OpenCV runtime files, configuration, and G-code templates are copied beside the executable. Existing tool installations can be selected using the build script options documented in [INSTALL_WINDOWS.txt](INSTALL_WINDOWS.txt).
 
-## Reproduce a paper result: Figure 16 (Bunny)
+## Reproduce a paper result: Figure 14 (Bunny)
 
-**Target:** the **Bunny row of Figure 16, "Gallery of results generated using InFuse planner"**, in [TechRxiv preprint v1](https://doi.org/10.36227/techrxiv.175329147.74597084/v1). It is on **PDF page 12**, counting the TechRxiv cover. The PDF already included in this repository is `techrxiv.175329147.74597084%2Fv1.pdf`. Figure numbers are version-specific: the target here is Figure 16 of that submitted preprint, not a figure number inferred from a later manuscript.
-
-The citation below refers to the published TVCG article. The reproduction target remains pinned to the preprint version submitted for artifact evaluation; its figure numbering is not asserted to match the published article.
+**Target:** the **Bunny row of Figure 14, "Gallery of results generated using InFuse"**, on **page 11 of the final manuscript** of [InFuse: Sequence Planning for In-Situ Printing and Material Injection](https://ieeexplore.ieee.org/document/11735140), DOI [10.1109/TVCG.2026.3743432](https://doi.org/10.1109/TVCG.2026.3743432). All figure references in this workflow use the final manuscript's numbering.
 
 The reproducible part is the Bunny printing-stage geometry and injection-event data: **P1, I1, P2, I2, P3, I3, P4, I4, P5**. The script executes the planner and exports five incremental OBJ meshes and four injection centers, together with a cumulative-stage SVG preview. It does not copy the paper image or use precomputed meshes instead of running the algorithm. No printer or GPU is required.
 
@@ -72,19 +70,19 @@ The following paths are relative to that new result directory:
 
 The OBJ meshes are **incremental printing stages**. To view the state after P3 in an OBJ-compatible viewer, load `patch_0.obj`, `patch_1.obj`, and `patch_2.obj` together in the same scene, without individually recentering them. In general, the state after Pk is the union of `patch_0.obj` through `patch_(k-1).obj`; `paper_stages.csv` lists these cumulative mesh sets explicitly. Injection coordinates use the same printing-platform frame as the OBJ meshes, rather than the original STL frame.
 
-**Checks:** the Bunny result must contain five printing stages and four injection events, matching the labeled sequence in Figure 16. `paper_result.json` records this count check. `run_manifest.json` separately records `reference_check: passed`, input/configuration/binary hashes, the commands, environment, and timing. The numerical regression check compares the new output with [expected_metrics.json](reproducibility/expected_metrics.json); it is not an independent verification of every shape boundary in the paper image.
+**Checks:** the Bunny result must contain five printing stages and four injection events, matching the labeled sequence in Figure 14. `paper_result.json` records this count check. `run_manifest.json` separately records `reference_check: passed`, input/configuration/binary hashes, the commands, environment, and timing. The numerical regression check compares the new output with [expected_metrics.json](reproducibility/expected_metrics.json); it is not an independent verification of every shape boundary in the paper image.
 
 Reference preview from the complete verification run on 2026-10-25 (the command above regenerates its SVG from new computation):
 
-![Computed cumulative Bunny stages for Figure 16](reproducibility/reference_bunny/figure16_bunny.png)
+![Computed cumulative Bunny stages for Figure 14](reproducibility/reference_bunny/figure14_bunny.png)
 
 The recorded [stage mapping](reproducibility/reference_bunny/paper_stages.csv) and [injection coordinates](reproducibility/reference_bunny/injection_events.csv) are supplied for inspection. They are reference outputs, not inputs to the planner. The fresh run must generate its own meshes and CSV files.
 
 ### Scope and file formats
 
-This target is the **Bunny part only** of the gallery. OBJ meshes and the injection CSV provide the geometric/stage data for inspecting the illustrated sequence; the script need not recreate the paper's lighting, camera, nozzle illustrations, injected-material rendering, or raster pixels. `paper_figure.svg` is a cumulative **XZ projection**, not a photorealistic 3D rendering. Other gallery models, physical fabrication, and the paper's benchmark Tables 1 and 2 are outside this workflow.
+This target is the **Bunny part only** of the gallery. OBJ meshes and the injection CSV provide the geometric/stage data for inspecting the illustrated sequence; the script need not recreate the paper's lighting, camera, nozzle illustrations, injected-material rendering, or raster pixels. `paper_figure.svg` is a cumulative **XZ projection**, not a photorealistic 3D rendering. Other gallery models, physical fabrication, and the paper's benchmark Tables I and II are outside this workflow.
 
-The shipped example uses beam width 500 in `opp/helpers.h`; the preprint reports 7500 for its benchmark configuration. Accordingly, no claim is made that this package reproduces the exact search statistics, travel distances, or runtimes in those tables. The figure-data workflow retains the bundled geometry and current algorithm settings rather than silently tuning them to force agreement.
+The shipped example uses beam width 500 in `opp/helpers.h`; Section VI-A of the final manuscript reports 7500 for its benchmark configuration. Accordingly, no claim is made that this package reproduces the exact search statistics, travel distances, or runtimes in those tables. The figure-data workflow retains the bundled geometry and current algorithm settings rather than silently tuning them to force agreement.
 
 OBJ, CSV, JSON, and SVG are standard formats. The custom nested path files and all new figure-output fields are documented in the plain-text [PAPER_RESULT.txt](reproducibility/PAPER_RESULT.txt) and [OUTPUT_FORMATS.md](reproducibility/OUTPUT_FORMATS.md). The latter also defines regression metrics, which are not physical fabrication-time estimates. The [reference table](reproducibility/reference_bunny/table.csv), [path projection](reproducibility/reference_bunny/toolpaths.svg), and [validation record](reproducibility/VALIDATION.md) provide supporting diagnostics. The small cylinder in `examples/demo.stl` remains a separate smoke-test input, not the paper-result target.
 

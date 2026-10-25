@@ -26,10 +26,10 @@ The reproduction script exports:
 
 | File | Content |
 | --- | --- |
-| `paper_figure.svg` | Five cumulative XZ printing-stage views for the Figure 16 Bunny target, with injection centers |
+| `paper_figure.svg` | Five cumulative XZ printing-stage views for the final manuscript's Figure 14 Bunny target, with injection centers |
 | `paper_stages.csv` | P1-P5 mapping to incremental OBJ meshes, cumulative mesh sets, and the next event |
 | `injection_events.csv` | I1-I4 in execution order, layer-record index, and XYZ in the same frame as the OBJ meshes |
-| `paper_result.json` | Exact preprint figure, computed printing/event counts, coordinate frame, and count-check status |
+| `paper_result.json` | Final manuscript title, DOI, figure/page reference, computed printing/event counts, coordinate frame, and count-check status |
 | `table.csv`, `metrics.json` | Mode, patch/polyline/point counts, layer classifications, and lengths |
 | `toolpaths.svg` | Projection of the generated paths using experiment.json's projection_axes, with patch colors; the bunny uses XZ |
 | `run_manifest.json` | Input/configuration/binary hashes, executed commands, environment, timings, and reference comparison |

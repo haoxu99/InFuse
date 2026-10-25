@@ -60,6 +60,17 @@ class PaperResultTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'counts'):
             self.export()
 
+    def test_final_manuscript_reference_reaches_generated_outputs(self):
+        target = json.loads((ROOT/'reproducibility'/'experiment.json').read_text(encoding='utf-8'))['paper_result']
+        self.manifest['paper_result'] = dict(target, printing_stage_count=2, injection_event_count=1)
+        report = self.export()
+        self.assertEqual(report['paper_result']['figure'], 'Figure 14')
+        self.assertEqual(report['paper_result']['doi'], '10.1109/TVCG.2026.3743432')
+        self.assertEqual(report['paper_result']['pdf_page'], 11)
+        saved = json.loads((self.output/'paper_result.json').read_text(encoding='utf-8'))
+        self.assertEqual(saved['paper_result'], self.manifest['paper_result'])
+        self.assertIn('Figure 14: Bunny', (self.output/'paper_figure.svg').read_text(encoding='utf-8'))
+
     def test_missing_mesh_is_rejected(self):
         (self.model/'patches'/'patch_1.obj').unlink()
         with self.assertRaisesRegex(ValueError, 'Missing paper-stage mesh'):
